@@ -1,19 +1,17 @@
-import org.jetbrains.kotlin.gradle.plugin.extraProperties
+import net.thebugmc.gradle.sonatypepublisher.PublishingType.AUTOMATIC
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("maven-publish")
+    id("net.thebugmc.gradle.sonatype-central-portal-publisher") version "1.2.2"
 }
 
-extraProperties {
-    val publishGroupId = "com.github.propogand"
-    val publishVersion = "0.0.1"
-    val publishArtifactId = "mathsdk"
-}
-
-apply {
-    from("${rootDir}/scripts/publish-module.gradle")
-}
+description = "Math library"
+group = "io.github.propogand"
+version = "0.0.4"
 
 android {
     namespace = "com.github.propogand.mathsdk"
@@ -52,4 +50,45 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+}
+
+//signing {
+//    useInMemoryPgpKeys(
+//        gradleLocalProperties(rootDir).getProperty("signing.keyId"),
+//        gradleLocalProperties(rootDir).getProperty("signing.password"),
+//        gradleLocalProperties(rootDir).getProperty("signing.secretKeyRingFile")
+//    )
+//}
+
+centralPortal { // all settings here are optional, but you better setup `pom`
+
+    username = gradleLocalProperties(rootDir).getProperty("centralPortal.username")
+    password = gradleLocalProperties(rootDir).getProperty("centralPortal.password")
+
+    publishingType = AUTOMATIC
+    name = "mathsdk"
+
+    pom {
+        packaging = "aar"
+        url = "https://github.com/Propogand/MathSdk"
+        licenses {
+            license {
+                name = "The Apache License, Version 2.0"
+                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+        }
+        developers {
+            developer {
+                id = "Propogand"
+                name = "Vladislav"
+                email = "reshgand@yandex.ru"
+            }
+        }
+        scm {
+            connection = "scm:git:git://github.com/Propogand/MathSdk.git"
+            developerConnection = "scm:git:ssh://github.com/Propogand/MathSdk.git"
+            url = "https://github.com/Propogand/MathSdk"
+        }
+    }
+    versionMapping { /*...*/ }
 }

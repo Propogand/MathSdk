@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.github.propogand.mathsdk"
+    namespace = "com.github.propogand.mathsdktest"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.github.propogand.mathsdk"
+        applicationId = "com.github.propogand.mathsdktest"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -35,9 +35,10 @@ android {
     }
 }
 
-dependencies {
-    implementation(project(":mathsdk"))
 
+
+dependencies {
+    implementation("io.github.propogand:mathsdk:0.0.4")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
